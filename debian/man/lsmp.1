@@ -1,0 +1,34 @@
+.\" SPDX-License-Identifier: BSD-2-Clause
+.\" Copyright (c) 2026 The Blueberry Pie OS Authors
+.Dd November 7, 2026
+.Dt LSMP 1
+.Os
+.Sh NAME
+.Nm lsmp
+.Nd list the Mach ports of a process
+.Sh SYNOPSIS
+.Nm
+.Op Fl vl
+.Op Fl j Ar file
+.Fl a | Fl p Ar pid
+.Nm
+.Fl h
+.Sh DESCRIPTION
+.Nm
+lists the Mach ports a process holds.
+.Bl -tag -width indent
+.It Fl a
+List every process.
+.It Fl p Ar pid
+List this process.
+.It Fl v
+Print more detail, with voucher details.
+.It Fl l
+Print as
+.Fl v
+does, with longer voucher details.
+.It Fl j Ar file
+Also write the result to this file as JSON.
+.It Fl h
+Print usage.
+.El

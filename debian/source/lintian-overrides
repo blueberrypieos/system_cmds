@@ -1,0 +1,6 @@
+superfluous-file-pattern debian/build/obj/getconf/gperf/confstr.c [debian/copyright:*]
+superfluous-file-pattern debian/build/obj/getconf/gperf/limits.c [debian/copyright:*]
+superfluous-file-pattern debian/build/obj/getconf/gperf/pathconf.c [debian/copyright:*]
+superfluous-file-pattern debian/build/obj/getconf/gperf/progenv.c [debian/copyright:*]
+superfluous-file-pattern debian/build/obj/getconf/gperf/sysconf.c [debian/copyright:*]
+superfluous-file-pattern debian/build/obj/getconf/gperf/unsigned_limits.c [debian/copyright:*]

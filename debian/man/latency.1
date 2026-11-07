@@ -1,0 +1,53 @@
+.\" SPDX-License-Identifier: BSD-2-Clause
+.\" Copyright (c) 2026 The Blueberry Pie OS Authors
+.Dd November 7, 2026
+.Dt LATENCY 1
+.Os
+.Sh NAME
+.Nm latency
+.Nd watch scheduling and interrupt delays
+.Sh SYNOPSIS
+.Nm
+.Op Fl p Ar priority
+.Op Fl h
+.Op Fl m
+.Op Fl st Ar threshold
+.Op Fl it Ar threshold
+.Op Fl c Ar codefile
+.Op Fl l Ar logfile
+.Op Fl R Ar rawfile
+.Op Fl n Ar kernel
+.Sh DESCRIPTION
+.Nm
+shows delays in thread scheduling and interrupt handling, using the kernel
+trace facility.
+Unless given
+.Fl R ,
+it must run as root.
+.Bl -tag -width indent
+.It Fl p Ar priority
+Watch this scheduling priority, or a range such as 31-47.
+.It Fl h
+Show interrupt delays at high resolution.
+Write them to
+.Pa latencies.csv
+on exit.
+.It Fl m
+Report interrupt delays for each CPU.
+.It Fl st Ar threshold
+Log trace entries when a scheduling delay exceeds this many microseconds.
+.It Fl it Ar threshold
+Log trace entries when an interrupt delay exceeds this many microseconds.
+.It Fl c Ar codefile
+Read trace code names from this file.
+The default is
+.Pa /usr/share/misc/trace.codes .
+.It Fl l Ar logfile
+Write trace entries to this file when a threshold is exceeded.
+.It Fl R Ar rawfile
+Process this raw trace file.
+.It Fl n Ar kernel
+Read symbols from this kernel file.
+.El
+.Sh SEE ALSO
+.Xr sc_usage 1

@@ -1,0 +1,31 @@
+.\" SPDX-License-Identifier: BSD-2-Clause
+.\" Copyright (c) 2026 The Blueberry Pie OS Authors
+.Dd November 7, 2026
+.Dt MKFILE 8
+.Os
+.Sh NAME
+.Nm mkfile
+.Nd create files of a given size
+.Sh SYNOPSIS
+.Nm
+.Op Fl nv
+.Ar size Ns Op Cm b | k | m | g
+.Ar file ...
+.Sh DESCRIPTION
+.Nm
+creates each
+.Ar file
+at the given size.
+The suffix multiplies
+.Ar size
+by 512 bytes, 1 KiB, 1 MiB or 1 GiB.
+The suffixes may also be upper case.
+Without a suffix,
+.Ar size
+is in bytes.
+.Bl -tag -width indent
+.It Fl n
+Set the size without writing the blocks.
+.It Fl v
+Report each file created.
+.El

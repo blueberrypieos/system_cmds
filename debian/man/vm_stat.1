@@ -1,0 +1,21 @@
+.\" SPDX-License-Identifier: BSD-2-Clause
+.\" Copyright (c) 2026 The Blueberry Pie OS Authors
+.Dd November 7, 2026
+.Dt VM_STAT 1
+.Os
+.Sh NAME
+.Nm vm_stat
+.Nd show virtual memory statistics
+.Sh SYNOPSIS
+.Nm
+.Op Oo Fl c Ar count Oc Ar interval
+.Sh DESCRIPTION
+.Nm
+prints virtual memory statistics from the kernel.
+With an
+.Ar interval
+in seconds, it prints them repeatedly.
+.Bl -tag -width indent
+.It Fl c Ar count
+Stop after this many samples.
+.El

@@ -1,0 +1,136 @@
+Description: Build reboot and shutdown without the unavailable kextd interfaces
+Author: The Blueberry Pie OS Authors
+Forwarded: not-needed
+Last-Update: 2026-10-29
+
+--- a/reboot/reboot.c
++++ b/reboot/reboot.c
+@@ -29,6 +29,23 @@
+  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  * SUCH DAMAGE.
+  */
++/* Modified 2026-10-29: builds without the kext manager interface (APSL 2.0 section 2.2(b)). */
++/*
++ * This file contains Original Code and/or Modifications of Original Code
++ * as defined in and that are subject to the Apple Public Source License
++ * Version 2.0 (the 'License'). You may not use this file except in
++ * compliance with the License. Please obtain a copy of the License at
++ * http://www.opensource.apple.com/apsl/ and read it before using this
++ * file.
++ *
++ * The Original Code and all software distributed under the License are
++ * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
++ * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
++ * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
++ * Please see the License for the specific language governing rights and
++ * limitations under the License.
++ */
+ 
+ #include <sys/cdefs.h>
+ 
+@@ -63,7 +80,8 @@ __FBSDID("$FreeBSD$");
+ 
+ #ifdef __APPLE__
+ #include <TargetConditionals.h>
+-#if !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
++#if !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR) && __has_include(<IOKit/kext/kextmanager_types.h>)
++#define HAVE_KEXTD 1
+ #include "kextmanager.h"
+ #include <IOKit/kext/kextmanager_types.h>
+ #endif
+@@ -362,7 +380,13 @@ get_pageins(void)
+ }
+ #endif
+ 
+-#if defined(__APPLE__) && !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
++#if defined(__APPLE__) && !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR) && !HAVE_KEXTD
++int
++reserve_reboot(void)
++{
++	return 0;
++}
++#elif defined(__APPLE__) && !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
+ // XX this routine is also in shutdown; it would be nice to share
+ 
+ static bool
+--- a/shutdown/shutdown.c
++++ b/shutdown/shutdown.c
+@@ -29,6 +29,23 @@
+  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  * SUCH DAMAGE.
+  */
++/* Modified 2026-10-29: builds without the kext manager and power management interfaces (APSL 2.0 section 2.2(b)). */
++/*
++ * This file contains Original Code and/or Modifications of Original Code
++ * as defined in and that are subject to the Apple Public Source License
++ * Version 2.0 (the 'License'). You may not use this file except in
++ * compliance with the License. Please obtain a copy of the License at
++ * http://www.opensource.apple.com/apsl/ and read it before using this
++ * file.
++ *
++ * The Original Code and all software distributed under the License are
++ * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
++ * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
++ * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
++ * Please see the License for the specific language governing rights and
++ * limitations under the License.
++ */
+ 
+ #include <sys/param.h>
+ #ifndef __APPLE__
+@@ -61,9 +78,15 @@
+ #include <vproc.h>
+ #include <vproc_priv.h>
+ 
++#if __has_include(<IOKit/kext/kextmanager_types.h>)
++#define HAVE_KEXTD 1
+ #include "kextmanager.h"
+ #include <IOKit/kext/kextmanager_types.h>
++#endif
++#if __has_include(<IOKit/pwr_mgt/IOPMLib.h>)
++#define HAVE_IOPMLIB 1
+ #include <IOKit/pwr_mgt/IOPMLib.h>
++#endif
+ #include <mach/mach_port.h>		// allocate
+ #include <mach/mach.h>			// task_self, etc
+ #include <servers/bootstrap.h>	// bootstrap
+@@ -508,6 +531,7 @@ die_you_gravy_sucking_pig_dog(void)
+ #else
+ #ifdef __APPLE__
+ 	if (dosleep) {
++#if HAVE_IOPMLIB
+ 		io_connect_t fb;
+ 		fb = IOPMFindPowerManagement(MACH_PORT_NULL);
+ 		if (fb != IO_OBJECT_NULL) {
+@@ -515,6 +539,9 @@ die_you_gravy_sucking_pig_dog(void)
+ 			if (err != kIOReturnSuccess)
+ 				fprintf(stderr, "shutdown: sleep failed (0x%08x)\n", err);
+ 		}
++#else
++		fprintf(stderr, "shutdown: sleep is not supported\n");
++#endif
+ 	} else {
+ 		struct utmpx utx;
+ 		int howto = 0;
+@@ -818,6 +845,13 @@ kextdDisabled(void)
+ // XX copied from reboot/reboot.c; it would be nice to share the code
+ 
+ #define WAITFORLOCK 1
++#if !HAVE_KEXTD
++int
++reserve_reboot(void)
++{
++    return 0;
++}
++#else
+ /*
+  * contact kextd to lock for reboot
+  */
+@@ -877,4 +911,5 @@ finish:
+ 
+     return rval;
+ }
++#endif
+ #endif /* __APPLE__ */

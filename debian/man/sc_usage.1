@@ -1,0 +1,42 @@
+.\" SPDX-License-Identifier: BSD-2-Clause
+.\" Copyright (c) 2026 The Blueberry Pie OS Authors
+.Dd November 7, 2026
+.Dt SC_USAGE 1
+.Os
+.Sh NAME
+.Nm sc_usage
+.Nd show the system calls of a process
+.Sh SYNOPSIS
+.Nm
+.Op Fl c Ar codefile
+.Op Fl e
+.Op Fl l
+.Op Fl s Ar seconds
+.Ar pid | command | Fl E Ar path Op Ar argument ...
+.Sh DESCRIPTION
+.Nm
+samples the system calls and page faults of one process, using the kernel
+trace facility.
+It must run as root.
+Name a running process by its
+.Ar pid
+or
+.Ar command ,
+or start one with
+.Fl E .
+.Bl -tag -width indent
+.It Fl c Ar codefile
+Read system call names from this file.
+The default is
+.Pa /usr/share/misc/trace.codes .
+.It Fl e
+Sort by the number of calls.
+.It Fl l
+Print lines, without redrawing the screen.
+.It Fl s Ar seconds
+Sample at this interval.
+.It Fl E
+Run the given path and arguments, and sample that.
+.El
+.Sh SEE ALSO
+.Xr latency 1

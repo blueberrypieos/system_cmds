@@ -1,0 +1,6 @@
+debian/build/obj/getconf/gperf/confstr.c
+debian/build/obj/getconf/gperf/limits.c
+debian/build/obj/getconf/gperf/pathconf.c
+debian/build/obj/getconf/gperf/progenv.c
+debian/build/obj/getconf/gperf/sysconf.c
+debian/build/obj/getconf/gperf/unsigned_limits.c

@@ -1,0 +1,63 @@
+.\" SPDX-License-Identifier: BSD-2-Clause
+.\" Copyright (c) 2026 The Blueberry Pie OS Authors
+.Dd November 7, 2026
+.Dt NVRAM 8
+.Os
+.Sh NAME
+.Nm nvram
+.Nd read and change firmware variables
+.Sh SYNOPSIS
+.Nm
+.Op Fl x | Fl X
+.Op Fl p
+.Op Fl f Ar file
+.Op Fl d Ar name
+.Op Fl r Ar name
+.Op Fl c
+.Op Fl s
+.Op Ar name Ns Op = Ns Ar value ...
+.Nm
+.Fl b Ar name file
+.Nm
+.Fl h
+.Sh DESCRIPTION
+.Nm
+prints or sets firmware variables.
+A
+.Ar name
+alone prints that variable.
+.Ar name Ns = Ns Ar value
+sets it.
+.Ar name Ns += Ns Ar value
+adds to its value.
+.Ar name Ns -= Ns Ar value
+removes from its value.
+.Bl -tag -width indent
+.It Fl x
+Use XML for printing or reading.
+Give this before
+.Fl p
+or
+.Fl f .
+.It Fl X
+Use hexadecimal for printing.
+Give this before
+.Fl p .
+.It Fl p
+Print every variable.
+.It Fl f Ar file
+Set variables from a text file.
+.It Fl d Ar name
+Delete a variable, without returning an error.
+.It Fl r Ar name
+Delete a variable, returning an error on failure.
+.It Fl c
+Delete every variable.
+.It Fl s
+Write the changes to storage now.
+.It Fl b Ar name file
+Set a variable from a binary file.
+This takes no other options.
+.It Fl h
+Print usage.
+.El

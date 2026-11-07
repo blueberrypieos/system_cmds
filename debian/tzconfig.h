@@ -1,0 +1,3 @@
+#define NETBSD_INSPIRED	0
+#define STD_INSPIRED	1
+#define HAVE_TZNAME	2

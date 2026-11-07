@@ -1,0 +1,90 @@
+.\" SPDX-License-Identifier: BSD-2-Clause
+.\" Copyright (c) 2026 The Blueberry Pie OS Authors
+.Dd November 7, 2026
+.Dt TASKPOLICY 8
+.Os
+.Sh NAME
+.Nm taskpolicy
+.Nd run a program with a scheduling and I/O policy
+.Sh SYNOPSIS
+.Nm
+.Op Fl x | Fl X
+.Op Fl d Ar policy
+.Op Fl g Ar policy
+.Op Fl c Ar clamp
+.Op Fl b
+.Op Fl t Ar tier
+.Op Fl l Ar tier
+.Op Fl a
+.Op Fl s
+.Op Fl S Ar shims
+.Op Fl P Ar control
+.Op Fl m Ar limit
+.Op Fl j Ar priority
+.Ar program Op Ar argument ...
+.Nm
+.Op Fl b | Fl B
+.Op Fl t Ar tier
+.Op Fl l Ar tier
+.Fl p Ar pid
+.Sh DESCRIPTION
+.Nm
+applies a policy, then runs
+.Ar program
+in its place.
+With
+.Fl p ,
+it changes a running process instead.
+.Bl -tag -width indent
+.It Fl x
+Force case-sensitive HFS lookups.
+.It Fl X
+Use the default case sensitivity for HFS lookups.
+.It Fl d Ar policy
+Set the disk I/O policy of the process.
+.It Fl g Ar policy
+Set the disk I/O policy used in the background state.
+.It Fl c Ar clamp
+Limit the quality of service to
+.Cm utility ,
+.Cm background
+or
+.Cm maintenance .
+.It Fl b
+Put the process in the background state.
+.It Fl B
+Take the process out of the background state.
+.It Fl t Ar tier
+Set the throughput tier.
+.It Fl l Ar tier
+Set the latency tier.
+.It Fl a
+Mark the program as an application.
+.It Fl s
+Start the program suspended.
+.It Fl S Ar shims
+Set the security transition shims.
+.It Fl P Ar control
+Set what happens under resource pressure:
+.Cm throttle ,
+.Cm kill
+or
+.Cm suspend .
+.It Fl m Ar limit
+Set a fatal memory limit, in MiB.
+.It Fl j Ar priority
+Set the memory pressure priority.
+.It Fl p Ar pid
+Change this process.
+.El
+.Pp
+A disk I/O
+.Ar policy
+is a number, or one of
+.Cm default ,
+.Cm important ,
+.Cm passive ,
+.Cm throttle ,
+.Cm utility
+or
+.Cm standard .

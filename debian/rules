@@ -1,0 +1,200 @@
+#!/usr/bin/make -f
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright (c) 2026 The Blueberry Pie OS Authors
+
+include /usr/share/pietoolchain/rules.mk
+
+PRIVATE := -I$(SDK)/System/Library/Frameworks/System.framework/PrivateHeaders
+GETCONF_GEN := unsigned_limits confstr limits pathconf progenv sysconf
+NOTICE := $(OBJ)/apsl-notice
+TOOLS_LDFLAGS := -Wl,-sectcreate,__TEXT,__source,$(NOTICE)
+
+TOOLS := ac accton arch at dmesg getconf getty hostinfo kpgo latency lskq lsmp mkfile newgrp \
+	nologin nvram passwd proc_uuid_policy purge pwd_mkdb reboot sa sc_usage shutdown sync sysctl \
+	taskpolicy vifs vipw vm_purgeable_stat vm_stat wait4path wordexp-helper zdump zic
+
+ac_SRCS := ac/ac.c
+ac_DIR := usr/sbin
+ac_MANS := ac/ac.8:man8
+
+accton_SRCS := accton/accton.c
+accton_DIR := usr/sbin
+accton_MANS := accton/accton.8:man8
+
+arch_SRCS := arch/arch.c
+arch_DIR := usr/bin
+arch_LIBS := -framework CoreFoundation
+arch_MANS := arch/arch.1:man1 arch/machine.1:man1
+
+at_SRCS := at/at.c at/panic.c at/parsetime.c at/perm.c
+at_DIR := usr/bin
+at_FLAGS := -DDAEMON_UID=1 -DDAEMON_GID=1 "-DDEFAULT_AT_QUEUE='a'" "-DDEFAULT_BATCH_QUEUE='b'" \
+	'-DPERM_PATH="/usr/lib/cron/"'
+at_MODE := 4555
+at_MANS := at/at.1:man1
+
+dmesg_SRCS := dmesg/dmesg.c
+dmesg_DIR := sbin
+dmesg_MANS := dmesg/dmesg.8:man8
+
+getconf_SRCS := getconf/getconf.c $(addprefix gperf/,$(addsuffix .c,$(GETCONF_GEN)))
+getconf_DIR := usr/bin
+getconf_FLAGS := -DAPPLE_GETCONF_UNDERSCORE -I$(SRCROOT)/getconf
+getconf_MANS := getconf/getconf.1:man1
+
+getty_SRCS := getty/chat.c getty/init.c getty/main.c getty/subr.c
+getty_DIR := usr/libexec
+getty_MANS := getty/getty.8:man8 getty/gettytab.5:man5 getty/ttys.5:man5
+
+hostinfo_SRCS := hostinfo/hostinfo.c
+hostinfo_DIR := usr/bin
+hostinfo_MANS := hostinfo/hostinfo.8:man8
+
+kpgo_SRCS := kpgo/kpgo.c
+kpgo_DIR := usr/bin
+kpgo_FLAGS := $(PRIVATE)
+
+latency_SRCS := latency/latency.c
+latency_DIR := usr/bin
+latency_FLAGS := $(PRIVATE)
+latency_LIBS := -lncurses -lutil
+latency_MANS := debian/man/latency.1:man1
+
+lskq_SRCS := lskq/lskq.c
+lskq_DIR := usr/bin
+lskq_FLAGS := $(PRIVATE)
+lskq_MANS := debian/man/lskq.1:man1
+
+lsmp_SRCS := lsmp/lsmp.c lsmp/port_details.c lsmp/task_details.c
+lsmp_DIR := usr/bin
+lsmp_LIBS := -lutil
+lsmp_MANS := debian/man/lsmp.1:man1
+
+mkfile_SRCS := mkfile/mkfile.c
+mkfile_DIR := usr/sbin
+mkfile_MANS := debian/man/mkfile.8:man8
+
+newgrp_SRCS := newgrp/newgrp.c
+newgrp_DIR := usr/bin
+newgrp_MODE := 4555
+newgrp_MANS := newgrp/newgrp.1:man1
+
+nologin_SRCS := nologin/nologin.c
+nologin_DIR := sbin
+nologin_MANS := nologin/nologin.5:man5 nologin/nologin.8:man8
+
+nvram_SRCS := nvram/nvram.c
+nvram_DIR := usr/sbin
+nvram_LIBS := -framework IOKit -framework CoreFoundation
+nvram_MANS := debian/man/nvram.8:man8
+
+passwd_SRCS := passwd/passwd.c passwd/file_passwd.c passwd/nis_passwd.c passwd/pam_passwd.c
+passwd_DIR := usr/bin
+passwd_LIBS := -lpam
+passwd_MANS := passwd/passwd.1:man1
+
+proc_uuid_policy_SRCS := proc_uuid_policy/proc_uuid_policy.c
+proc_uuid_policy_DIR := usr/local/bin
+
+purge_SRCS := purge/purge.c
+purge_DIR := usr/sbin
+purge_MANS := debian/man/purge.8:man8
+
+pwd_mkdb_SRCS := pwd_mkdb/pw_scan.c pwd_mkdb/pwd_mkdb.c
+pwd_mkdb_DIR := usr/sbin
+pwd_mkdb_MANS := pwd_mkdb/pwd_mkdb.8:man8
+
+reboot_SRCS := reboot/reboot.c
+reboot_DIR := sbin
+reboot_LIBS := -framework CoreFoundation -framework IOKit
+reboot_MANS := reboot/reboot.8:man8
+
+sa_SRCS := sa/db.c sa/main.c sa/pdb.c sa/usrdb.c
+sa_DIR := usr/sbin
+sa_FLAGS := -DAHZV1=64
+sa_MANS := sa/sa.8:man8
+
+sc_usage_SRCS := sc_usage/sc_usage.c
+sc_usage_DIR := usr/bin
+sc_usage_FLAGS := $(PRIVATE)
+sc_usage_LIBS := -lutil -lncurses
+sc_usage_MANS := debian/man/sc_usage.1:man1
+
+shutdown_SRCS := shutdown/shutdown.c
+shutdown_DIR := sbin
+shutdown_LIBS := -lbsm -framework IOKit
+shutdown_MANS := shutdown/shutdown.8:man8
+
+sync_SRCS := sync/sync.c
+sync_DIR := bin
+sync_MANS := sync/sync.8:man8
+
+sysctl_SRCS := sysctl/sysctl.c
+sysctl_DIR := usr/sbin
+sysctl_MANS := sysctl/sysctl.8:man8 sysctl/sysctl.conf.5:man5
+
+taskpolicy_SRCS := taskpolicy/taskpolicy.c
+taskpolicy_DIR := usr/sbin
+taskpolicy_FLAGS := $(PRIVATE)
+taskpolicy_MANS := debian/man/taskpolicy.8:man8
+
+vifs_SRCS := vifs/vifs.c
+vifs_DIR := usr/sbin
+vifs_MANS := vifs/vifs.8:man8
+
+vipw_SRCS := vipw/vipw.c vipw/pw_util.c
+vipw_DIR := usr/sbin
+vipw_MANS := vipw/vipw.8:man8
+
+vm_purgeable_stat_SRCS := vm_purgeable_stat/vm_purgeable_stat.c
+vm_purgeable_stat_DIR := usr/local/bin
+vm_purgeable_stat_LIBS := -lutil
+
+vm_stat_SRCS := vm_stat/vm_stat.c
+vm_stat_DIR := usr/bin
+vm_stat_MANS := debian/man/vm_stat.1:man1
+
+wait4path_SRCS := wait4path/wait4path.c
+wait4path_DIR := bin
+wait4path_MANS := wait4path/wait4path.1:man1
+
+wordexp-helper_SRCS := wordexp-helper/wordexp-helper.c
+wordexp-helper_DIR := usr/lib/system
+
+zdump_SRCS := zdump/zdump.c
+zdump_DIR := usr/sbin
+zdump_FLAGS := -include $(SRCROOT)/debian/tzconfig.h -I$(OBJ) -I$(SRCROOT)/zic
+zdump_MANS := zdump/zdump.8:man8
+
+zic_SRCS := zic/zic.c
+zic_DIR := usr/sbin
+zic_FLAGS := -I$(OBJ)
+zic_MANS := zic/zic.8:man8
+
+LINKS := sbin/reboot:sbin/halt usr/bin/arch:usr/bin/machine usr/bin/at:usr/bin/atq \
+	usr/bin/at:usr/bin/atrm usr/bin/at:usr/bin/batch
+MANS := pagesize/pagesize.1:man1
+
+include $(PIETOOLCHAIN)/tools.mk
+
+$(OBJ)/getconf/gperf/%.c: $(SRCROOT)/getconf/%.gperf
+	@mkdir -p $(dir $@)
+	awk -f $(SRCROOT)/getconf/fake-gperf.awk $< > $@
+
+$(OBJ)/version.h:
+	@mkdir -p $(OBJ)
+	printf '%s\n' 'static char const PKGVERSION[]="(tzcode) ";' \
+		'static char const TZVERSION[]="2022g";' \
+		'static char const REPORT_BUGS_TO[]="tz@iana.org";' > $@
+$(OBJ)/zdump/zdump/zdump.o $(OBJ)/zic/zic/zic.o: | $(OBJ)/version.h
+
+$(NOTICE):
+	@mkdir -p $(OBJ)
+	printf '%s\n' 'This program contains Covered Code under the Apple Public Source License 2.0.' \
+		'Its Source Code is available under that License from https://github.com/blueberrypieos/system-cmds.' > $@
+$(TOOL_BINS): | $(NOTICE)
+
+install: install-tools
+	install -m 755 $(SRCROOT)/pagesize/pagesize.sh $(ROOT)/usr/bin/pagesize
+
+.PHONY: install

@@ -1,0 +1,39 @@
+.\" SPDX-License-Identifier: BSD-2-Clause
+.\" Copyright (c) 2026 The Blueberry Pie OS Authors
+.Dd November 7, 2026
+.Dt LSKQ 1
+.Os
+.Sh NAME
+.Nm lskq
+.Nd list kqueues and their events
+.Sh SYNOPSIS
+.Nm
+.Op Fl ver
+.Fl a | Fl p Ar pid | Ar pid
+.Nm
+.Fl h
+.Sh DESCRIPTION
+.Nm
+lists the kqueues of a process and the events registered on them.
+Name the process with
+.Fl p
+or a bare
+.Ar pid ,
+or give
+.Fl a .
+.Bl -tag -width indent
+.It Fl a
+List every process.
+.It Fl p Ar pid
+List this process.
+.It Fl e
+Leave out empty kqueues.
+.It Fl r
+Print raw values.
+.It Fl v
+Print more detail.
+.It Fl h
+Print a guide to the output.
+.El
+.Sh SEE ALSO
+.Xr kqueue 2
