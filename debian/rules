@@ -60,10 +60,10 @@ latency_FLAGS := $(PRIVATE)
 latency_LIBS := -lncurses -lutil
 latency_MANS := debian/man/latency.1:man1
 
-login_SRCS := login/login.c
+login_SRCS := login/login.c login/login_audit.c
 login_DIR := usr/bin
-login_FLAGS := -DUSE_PAM
-login_LIBS := -lpam
+login_FLAGS := -DUSE_PAM -DUSE_BSM_AUDIT
+login_LIBS := -lpam -lbsm
 login_MODE := 4555
 login_MANS := login/login.1:man1
 

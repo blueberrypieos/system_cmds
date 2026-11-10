@@ -609,11 +609,7 @@ main(int argc, char *argv[])
 #ifdef USE_BSM_AUDIT
 	/* Audit successful login. */
 	if (auditsuccess)
-#ifdef __APPLE__
 		au_login_success(fflag);
-#else
-		au_login_success();
-#endif /* __APPLE__ */
 #endif
 
 #ifdef LOGIN_CAP
