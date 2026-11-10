@@ -11,7 +11,7 @@ TOOLS_LDFLAGS := -Wl,-sectcreate,__TEXT,__source,$(NOTICE)
 
 TOOLS := ac accton arch at dmesg getconf getty hostinfo kpgo latency login lskq lsmp mkfile newgrp \
 	nologin nvram passwd proc_uuid_policy purge pwd_mkdb reboot sa sc_usage shutdown sync sysctl \
-	taskpolicy vifs vipw vm_purgeable_stat vm_stat wait4path wordexp-helper zdump zic
+	taskpolicy vifs vipw vm_purgeable_stat vm_stat wait4path wordexp-helper zdump zic zprint pagesize
 
 ac_SRCS := ac/ac.c
 ac_DIR := usr/sbin
@@ -53,6 +53,10 @@ hostinfo_MANS := hostinfo/hostinfo.8:man8
 kpgo_SRCS := kpgo/kpgo.c
 kpgo_DIR := usr/bin
 kpgo_FLAGS := $(PRIVATE)
+
+pagesize_SRCS := pagesize/pagesize.c
+pagesize_DIR := usr/bin
+pagesize_MANS := pagesize/pagesize.1:man1
 
 latency_SRCS := latency/latency.c
 latency_DIR := usr/bin
@@ -173,6 +177,12 @@ zdump_DIR := usr/sbin
 zdump_FLAGS := -include $(SRCROOT)/debian/tzconfig.h -I$(OBJ) -I$(SRCROOT)/zic
 zdump_MANS := zdump/zdump.8:man8
 
+zprint_SRCS := zprint/zprint.c
+zprint_DIR := usr/bin
+zprint_FLAGS := $(PRIVATE) -I$(SDK)/System/Library/Frameworks/Kernel.framework/PrivateHeaders/mach
+zprint_LIBS := -framework IOKit -framework CoreSymbolication -framework CoreFoundation -lutil
+zprint_MANS := zprint/zprint.1:man1
+
 zic_SRCS := zic/zic.c
 zic_DIR := usr/sbin
 zic_FLAGS := -I$(OBJ)
@@ -180,7 +190,6 @@ zic_MANS := zic/zic.8:man8
 
 LINKS := sbin/reboot:sbin/halt usr/bin/arch:usr/bin/machine usr/bin/at:usr/bin/atq \
 	usr/bin/at:usr/bin/atrm usr/bin/at:usr/bin/batch
-MANS := pagesize/pagesize.1:man1
 
 include $(PIETOOLCHAIN)/tools.mk
 
@@ -204,6 +213,5 @@ $(TOOL_BINS): | $(NOTICE)
 install: install-tools
 	install -d $(ROOT)/etc/pam.d
 	install -m 644 $(SRCROOT)/debian/pam.d/login $(ROOT)/etc/pam.d/login
-	install -m 755 $(SRCROOT)/pagesize/pagesize.sh $(ROOT)/usr/bin/pagesize
 
 .PHONY: install
