@@ -63,6 +63,7 @@ Files-Included:
  nologin/nologin.c
  nvram/nvram.c
  pagesize/pagesize.1
+ pagesize/pagesize.c
  pagesize/pagesize.sh
  passwd/file_passwd.c
  passwd/nis_passwd.c
