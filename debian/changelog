@@ -1,3 +1,9 @@
+system-cmds (1042.120.1+ds2-1) blueberry-pie-os; urgency=medium
+
+  * Build login.
+
+ -- Maxwell <maxwell@blueberrypieos.com>  Tue, 10 Nov 2026 00:33:52 +0000
+
 system-cmds (1042.120.1+ds1-1) blueberry-pie-os; urgency=medium
 
   * system_cmds 1042.120.1

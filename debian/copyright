@@ -44,6 +44,10 @@ Files-Included:
  hostinfo/*
  kpgo/*
  latency/latency.c
+ login/login.1
+ login/login.c
+ login/login.h
+ login/pathnames.h
  lskq/common.h
  lskq/lskq.c
  lsmp/common.h
@@ -227,6 +231,38 @@ Files: getconf/confstr.gperf
 Copyright: none; the author disclaimed copyright in these files
  Apple Inc.
 License: LicenseRef-public-domain-getconf AND APSL-2.0
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
+Files: login/login.c
+Copyright: 1980, 1987, 1988, 1991, 1993, 1994 The Regents of the University of California
+ 2002 Networks Associates Technologies, Inc.
+ Portions of this software were developed for the FreeBSD Project by
+ ThinkSec AS and NAI Labs, the Security Research Division of Network
+ Associates, Inc.  under DARPA/SPAWAR contract N66001-01-C-8035
+ ("CBOSS"), as part of the DARPA CHATS research program.
+ 1999-2007 Apple Inc.
+License: BSD-4-Clause-UC AND APSL-2.0
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
+Files: login/login.h
+Copyright: 2001 FreeBSD, Inc
+License: LicenseRef-BSD-2-Clause-UC AND APSL-2.0
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
+Files: login/pathnames.h
+Copyright: 1989, 1993 The Regents of the University of California
+ Apple Inc.
+License: LicenseRef-BSD-3-Clause-UC AND APSL-2.0
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
+Files: login/login.1
+Copyright: 1980, 1990, 1993 The Regents of the University of California
+ Apple Inc.
+License: LicenseRef-BSD-3-Clause-UC AND APSL-2.0
 Comment: The Apple code was originally distributed under APSL-1.0. It is used
  here under APSL-2.0, as permitted by section 7 of APSL-1.0.
 
@@ -1031,3 +1067,25 @@ License: public-domain
  .
  This file is in the public domain, so clarified as of
  2009-05-17 by Arthur David Olson.
+
+License: LicenseRef-BSD-2-Clause-UC
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.

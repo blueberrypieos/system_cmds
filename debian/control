@@ -13,6 +13,6 @@ Package: system-cmds
 Architecture: darwin-arm64
 Essential: yes
 Priority: required
-Depends: corefoundation, iokit, libbsm, libsystem, libutil, ncurses, openpam
+Depends: corefoundation, iokit, libbsm, libsystem, libutil, ncurses, openpam, pam-modules
 Description: system commands (sysctl, reboot, dmesg, ...)
  System administration, process, memory, account and time zone utilities.
