@@ -20,6 +20,23 @@ Files-Included:
  at/perm.c
  at/perm.h
  at/privs.h
+ atrun/atrun.c
+ atrun/gloadavg.c
+ atrun/gloadavg.h
+ chkpasswd/file_passwd.c
+ chkpasswd/nis_passwd.c
+ chkpasswd/od_passwd.c
+ chkpasswd/pam_passwd.c
+ chkpasswd/passwd.c
+ chkpasswd/stringops.c
+ chkpasswd/stringops.h
+ chpass/chpass.1
+ chpass/chpass.c
+ chpass/chpass.h
+ chpass/edit.c
+ chpass/field.c
+ chpass/table.c
+ chpass/util.c
  dmesg/*
  getconf/confstr.gperf
  getconf/fake-gperf.awk
@@ -42,11 +59,13 @@ Files-Included:
  getty/subr.c
  getty/ttys.5
  hostinfo/*
+ iostat/*
  kpgo/*
  latency/latency.c
  login/login.1
  login/login.c
  login/login.h
+ login/login_audit.c
  login/pathnames.h
  lskq/common.h
  lskq/lskq.c
@@ -66,6 +85,7 @@ Files-Included:
  pagesize/pagesize.sh
  passwd/file_passwd.c
  passwd/nis_passwd.c
+ passwd/od_passwd.c
  passwd/pam_passwd.c
  passwd/passwd.1
  passwd/passwd.c
@@ -266,6 +286,12 @@ License: LicenseRef-BSD-3-Clause-UC AND APSL-2.0
 Comment: The Apple code was originally distributed under APSL-1.0. It is used
  here under APSL-2.0, as permitted by section 7 of APSL-1.0.
 
+Files: login/login_audit.c
+Copyright: 2005-2016 Apple Inc.
+License: LicenseRef-BSD-3-Clause-Apple-Computer AND APSL-2.0
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
 Files: nologin/nologin.c
 Copyright: 2004 The FreeBSD Project
 License: LicenseRef-BSD-2-Clause-author-contributors
@@ -330,6 +356,7 @@ Files: at/at.h
  at/parsetime.h
  at/perm.h
  at/privs.h
+ atrun/gloadavg.h
 Copyright: 1993-1994 Thomas Koenig
 License: LicenseRef-BSD-2-Clause-FreeBSD-at
 
@@ -348,6 +375,31 @@ Copyright: 1999 Apple Computer, Inc.
  1999-2016 Apple Inc.
  1993 Christopher G. Demetriou
 License: APSL-2.0 AND LicenseRef-BSD-4-Clause-Demetriou
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
+Files: atrun/atrun.c
+ atrun/gloadavg.c
+Copyright: 1993-1994 Thomas Koenig
+ Apple Inc.
+License: LicenseRef-BSD-2-Clause-FreeBSD-at AND APSL-2.0
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
+Files: iostat/iostat.c
+Copyright: 1999 Apple Computer, Inc.
+ 1999-2019 Apple Inc.
+ 1997, 1998, 2000, 2001 Kenneth D. Merry
+ 1986, 1991, 1993 The Regents of the University of California
+ 1996 John M. Vinopal
+License: APSL-2.0 AND LicenseRef-BSD-3-Clause-author-contributors AND LicenseRef-BSD-3-Clause-UC-clause4 AND LicenseRef-BSD-4-Clause-Vinopal
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
+Files: iostat/iostat.8
+Copyright: 1997 Kenneth D. Merry
+ 1985, 1991, 1993 The Regents of the University of California
+License: LicenseRef-BSD-3-Clause-author-contributors AND LicenseRef-BSD-3-Clause-UC AND APSL-2.0
 Comment: The Apple code was originally distributed under APSL-1.0. It is used
  here under APSL-2.0, as permitted by section 7 of APSL-1.0.
 
@@ -375,6 +427,7 @@ Comment: The Apple code was originally distributed under APSL-1.0. It is used
  here under APSL-2.0, as permitted by section 7 of APSL-1.0.
 
 Files: arch/arch.c
+ chkpasswd/pam_passwd.c
  latency/latency.c
  lskq/*
  passwd/*
@@ -403,7 +456,8 @@ License: BSD-4-Clause-UC AND APSL-2.0
 Comment: The Apple code was originally distributed under APSL-1.0. It is used
  here under APSL-2.0, as permitted by section 7 of APSL-1.0.
 
-Files: dmesg/dmesg.c
+Files: chkpasswd/nis_passwd.c
+ dmesg/dmesg.c
  passwd/nis_passwd.c
  vipw/pw_util.h
 Copyright: 1998-1999 Apple Computer, Inc.
@@ -429,6 +483,49 @@ License: APSL-2.0
 Comment: Originally distributed under APSL-1.0. Used here under APSL-2.0, as
  permitted by section 7 of APSL-1.0.
 
+Files: chkpasswd/file_passwd.c
+ chkpasswd/passwd.c
+ chkpasswd/stringops.c
+ chkpasswd/stringops.h
+Copyright: 1999 Apple Computer, Inc.
+ 1999-2016 Apple Inc.
+License: APSL-2.0
+Comment: Originally distributed under APSL-1.0. Used here under APSL-2.0, as
+ permitted by section 7 of APSL-1.0.
+
+Files: chkpasswd/od_passwd.c
+Copyright: 1998-2016 Apple Inc.
+ 1988 Sun Microsystems, Inc.
+ 1988 The Regents of the University of California
+License: BSD-4-Clause-UC AND APSL-2.0
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
+Files: chpass/chpass.c
+ chpass/chpass.h
+ chpass/edit.c
+ chpass/field.c
+ chpass/util.c
+Copyright: 1999-2016 Apple Inc.
+ 1988, 1990, 1993-1994 The Regents of the University of California
+ 2002 Networks Associates Technology, Inc.
+ Portions of this software were developed for the FreeBSD Project by
+ ThinkSec AS and NAI Labs, the Security Research Division of Network
+ Associates, Inc.  under DARPA/SPAWAR contract N66001-01-C-8035
+ ("CBOSS"), as part of the DARPA CHATS research program.
+License: APSL-2.0 AND BSD-4-Clause-UC
+
+Files: chpass/table.c
+Copyright: 1999-2016 Apple Inc.
+ 1990, 1993-1994 The Regents of the University of California
+License: APSL-2.0 AND LicenseRef-BSD-3-Clause-UC
+
+Files: chpass/chpass.1
+Copyright: 1988, 1990, 1993 The Regents of the University of California
+License: LicenseRef-BSD-3-Clause-UC AND APSL-2.0
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
 Files: getty/chat.c
 Copyright: 1997 David L Nugent <davidn@blaze.net.au>
 License: LicenseRef-Nugent-getty
@@ -437,13 +534,32 @@ Files: debian/*
 Copyright: 2026 The Blueberry Pie OS Authors
 License: BSD-2-Clause
 
-Files: debian/patches/0001-*
-Copyright: 2026 The Blueberry Pie OS Authors
+Files: debian/patches/0001-reboot-shutdown-without-kextd.patch
+Copyright: 1980, 1986, 1988, 1990, 1993 The Regents of the University of California
+ 2007 Apple Inc.
+ 2026 The Blueberry Pie OS Authors
 License: LicenseRef-BSD-3-Clause-UC AND APSL-2.0
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
 
-Files: debian/patches/0002-*
-Copyright: 2026 The Blueberry Pie OS Authors
-License: APSL-2.0
+Files: debian/patches/0002-iostat-sigint-dispatch-source.patch
+Copyright: 1999 Apple Computer, Inc.
+ 1999-2019 Apple Inc.
+ 1997, 1998, 2000, 2001 Kenneth D. Merry
+ 1986, 1991, 1993 The Regents of the University of California
+ 1996 John M. Vinopal
+ 2026 The Blueberry Pie OS Authors
+License: APSL-2.0 AND LicenseRef-BSD-3-Clause-author-contributors AND LicenseRef-BSD-3-Clause-UC-clause4 AND LicenseRef-BSD-4-Clause-Vinopal
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
+Files: debian/patches/0003-atrun-without-btm.patch
+Copyright: 1993-1994 Thomas Koenig
+ Apple Inc.
+ 2026 The Blueberry Pie OS Authors
+License: LicenseRef-BSD-2-Clause-FreeBSD-at AND APSL-2.0
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
 
 Files: debian/build/obj/getconf/gperf/unsigned_limits.c
 Copyright: none; the author disclaimed copyright in these files
@@ -481,7 +597,7 @@ License: LicenseRef-Nugent-getty
 License: APSL-2.0
  This program contains Covered Code under the Apple Public Source License
  2.0. Its Source Code is available under that License from
- https://github.com/blueberrypieos/system-cmds.
+ https://github.com/blueberrypieos/system_cmds.
  .
  APPLE PUBLIC SOURCE LICENSE
  Version 2.0 - August 6, 2003
@@ -943,6 +1059,83 @@ License: LicenseRef-BSD-3-Clause-UC
  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
+License: LicenseRef-BSD-3-Clause-author-contributors
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+    derived from this software without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+License: LicenseRef-BSD-3-Clause-UC-clause4
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 4. Neither the name of the University nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+License: LicenseRef-BSD-4-Clause-Vinopal
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. All advertising materials mentioning features or use of this software
+    must display the following acknowledgement:
+      This product includes software developed for the NetBSD Project
+      by John M. Vinopal.
+ 4. The name of the author may not be used to endorse or promote products
+    derived from this software without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
 License: LicenseRef-BSD-4-Clause-Demetriou
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -1089,3 +1282,28 @@ License: LicenseRef-BSD-2-Clause-UC
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
+
+License: LicenseRef-BSD-3-Clause-Apple-Computer
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ .
+ 1.  Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+ 2.  Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+ 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
+     its contributors may be used to endorse or promote products derived
+     from this software without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
+ EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL APPLE OR ITS CONTRIBUTORS BE LIABLE FOR ANY
+ DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

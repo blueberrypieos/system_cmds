@@ -1,3 +1,5 @@
 APPLE_LICENSE
 zic/version.h
 login/pam.d/login
+chkpasswd/passwd.h
+chpass/open_directory.h

@@ -9,9 +9,9 @@ GETCONF_GEN := unsigned_limits confstr limits pathconf progenv sysconf
 NOTICE := $(OBJ)/apsl-notice
 TOOLS_LDFLAGS := -Wl,-sectcreate,__TEXT,__source,$(NOTICE)
 
-TOOLS := ac accton arch at dmesg getconf getty hostinfo kpgo latency login lskq lsmp mkfile newgrp \
-	nologin nvram passwd proc_uuid_policy purge pwd_mkdb reboot sa sc_usage shutdown sync sysctl \
-	taskpolicy vifs vipw vm_purgeable_stat vm_stat wait4path wordexp-helper zdump zic
+TOOLS := ac accton arch at atrun chkpasswd chpass dmesg getconf getty hostinfo iostat kpgo latency login \
+	lskq lsmp mkfile newgrp nologin nvram passwd proc_uuid_policy purge pwd_mkdb reboot sa sc_usage \
+	shutdown sync sysctl taskpolicy vifs vipw vm_purgeable_stat vm_stat wait4path wordexp-helper zdump zic
 
 ac_SRCS := ac/ac.c
 ac_DIR := usr/sbin
@@ -33,6 +33,24 @@ at_FLAGS := -DDAEMON_UID=1 -DDAEMON_GID=1 "-DDEFAULT_AT_QUEUE='a'" "-DDEFAULT_BA
 at_MODE := 4555
 at_MANS := at/at.1:man1
 
+atrun_SRCS := atrun/gloadavg.c atrun/atrun.c
+atrun_DIR := usr/libexec
+atrun_FLAGS := -DDAEMON_UID=1 -DDAEMON_GID=1 -I$(SRCROOT)/at
+
+chkpasswd_SRCS := chkpasswd/file_passwd.c chkpasswd/nis_passwd.c chkpasswd/od_passwd.c \
+	chkpasswd/pam_passwd.c chkpasswd/passwd.c chkpasswd/stringops.c
+chkpasswd_DIR := usr/libexec
+chkpasswd_FLAGS := -I$(SRCROOT)/debian/chkpasswd
+chkpasswd_LIBS := -lpam -framework OpenDirectory -framework CoreFoundation
+chkpasswd_MANS := debian/man/chkpasswd.8:man8
+
+chpass_SRCS := chpass/chpass.c chpass/edit.c chpass/field.c debian/chpass/open_directory.c chpass/table.c \
+	chpass/util.c
+chpass_DIR := usr/bin
+chpass_FLAGS := -I$(SRCROOT)/debian/chpass -I$(SRCROOT)/chpass
+chpass_LIBS := -framework OpenDirectory -framework CoreFoundation
+chpass_MANS := chpass/chpass.1:man1
+
 dmesg_SRCS := dmesg/dmesg.c
 dmesg_DIR := sbin
 dmesg_MANS := dmesg/dmesg.8:man8
@@ -50,6 +68,11 @@ hostinfo_SRCS := hostinfo/hostinfo.c
 hostinfo_DIR := usr/bin
 hostinfo_MANS := hostinfo/hostinfo.8:man8
 
+iostat_SRCS := iostat/iostat.c
+iostat_DIR := usr/sbin
+iostat_LIBS := -framework IOKit -framework CoreFoundation
+iostat_MANS := iostat/iostat.8:man8
+
 kpgo_SRCS := kpgo/kpgo.c
 kpgo_DIR := usr/bin
 kpgo_FLAGS := $(PRIVATE)
@@ -60,10 +83,10 @@ latency_FLAGS := $(PRIVATE)
 latency_LIBS := -lncurses -lutil
 latency_MANS := debian/man/latency.1:man1
 
-login_SRCS := login/login.c
+login_SRCS := login/login.c login/login_audit.c
 login_DIR := usr/bin
-login_FLAGS := -DUSE_PAM
-login_LIBS := -lpam
+login_FLAGS := -DUSE_PAM -DUSE_BSM_AUDIT
+login_LIBS := -lpam -lbsm -Wl,-U,_ess_notify_login_login -Wl,-U,_ess_notify_login_logout
 login_MODE := 4555
 login_MANS := login/login.1:man1
 
@@ -95,9 +118,10 @@ nvram_DIR := usr/sbin
 nvram_LIBS := -framework IOKit -framework CoreFoundation
 nvram_MANS := debian/man/nvram.8:man8
 
-passwd_SRCS := passwd/passwd.c passwd/file_passwd.c passwd/nis_passwd.c passwd/pam_passwd.c
+passwd_SRCS := passwd/passwd.c passwd/file_passwd.c passwd/nis_passwd.c passwd/od_passwd.c \
+	passwd/pam_passwd.c
 passwd_DIR := usr/bin
-passwd_LIBS := -lpam
+passwd_LIBS := -framework OpenDirectory -framework CoreFoundation -lpam
 passwd_MANS := passwd/passwd.1:man1
 
 proc_uuid_policy_SRCS := proc_uuid_policy/proc_uuid_policy.c
@@ -179,7 +203,7 @@ zic_FLAGS := -I$(OBJ)
 zic_MANS := zic/zic.8:man8
 
 LINKS := sbin/reboot:sbin/halt usr/bin/arch:usr/bin/machine usr/bin/at:usr/bin/atq \
-	usr/bin/at:usr/bin/atrm usr/bin/at:usr/bin/batch
+	usr/bin/at:usr/bin/atrm usr/bin/at:usr/bin/batch usr/bin/chpass:usr/bin/chfn usr/bin/chpass:usr/bin/chsh
 MANS := pagesize/pagesize.1:man1
 
 include $(PIETOOLCHAIN)/tools.mk
@@ -198,12 +222,17 @@ $(OBJ)/zdump/zdump/zdump.o $(OBJ)/zic/zic/zic.o: | $(OBJ)/version.h
 $(NOTICE):
 	@mkdir -p $(OBJ)
 	printf '%s\n' 'This program contains Covered Code under the Apple Public Source License 2.0.' \
-		'Its Source Code is available under that License from https://github.com/blueberrypieos/system-cmds.' > $@
+		'Its Source Code is available under that License from https://github.com/blueberrypieos/system_cmds.' > $@
 $(TOOL_BINS): | $(NOTICE)
 
 install: install-tools
 	install -d $(ROOT)/etc/pam.d
-	install -m 644 $(SRCROOT)/debian/pam.d/login $(ROOT)/etc/pam.d/login
+	cd $(SRCROOT)/debian/pam.d && install -m 644 chkpasswd login login.term passwd $(ROOT)/etc/pam.d/
+	ln -s chpass.1 $(ROOT)/usr/share/man/man1/chfn.1
+	ln -s chpass.1 $(ROOT)/usr/share/man/man1/chsh.1
 	install -m 755 $(SRCROOT)/pagesize/pagesize.sh $(ROOT)/usr/bin/pagesize
+	install -d $(ROOT)/var/at/jobs $(ROOT)/var/at/spool
+	ln -s ../../var/at $(ROOT)/usr/lib/cron
+	install -D -m 755 debian/system-cmds.postinst $(ROOT)/DEBIAN/postinst
 
 .PHONY: install

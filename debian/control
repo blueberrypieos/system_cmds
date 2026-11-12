@@ -2,17 +2,18 @@ Source: system-cmds
 Section: admin
 Priority: optional
 Maintainer: Maxwell <maxwell@blueberrypieos.com>
-Build-Depends: pietoolchain (>= 0.1.0)
+Build-Depends: opendirectory-dev (>= 146+ds1), pietoolchain (>= 0.2.0), pietoolchain-sdk (>= 0.2.0)
 Standards-Version: 4.7.3
 Homepage: https://github.com/apple-oss-distributions/system_cmds
-Vcs-Git: https://github.com/blueberrypieos/system-cmds.git -b blueberry-pie-os/latest
-Vcs-Browser: https://github.com/blueberrypieos/system-cmds
+Vcs-Git: https://github.com/blueberrypieos/system_cmds.git -b blueberry-pie-os/latest
+Vcs-Browser: https://github.com/blueberrypieos/system_cmds
 Rules-Requires-Root: no
 
 Package: system-cmds
 Architecture: darwin-arm64
 Essential: yes
 Priority: required
-Depends: corefoundation, iokit, libbsm, libsystem, libutil, ncurses, openpam, pam-modules
+Depends: corefoundation, iokit, libbsm, libsystem, libutil, ncurses, opendirectory, openpam,
+ pam-modules (>= 217.100.6+ds2-1)
 Description: system commands (sysctl, reboot, dmesg, ...)
  System administration, process, memory, account and time zone utilities.

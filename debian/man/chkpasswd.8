@@ -1,0 +1,70 @@
+.\" SPDX-License-Identifier: BSD-2-Clause
+.\" Copyright (c) 2026 The Blueberry Pie OS Authors
+.Dd November 11, 2026
+.Dt CHKPASSWD 8
+.Os
+.Sh NAME
+.Nm chkpasswd
+.Nd check a user's password
+.Sh SYNOPSIS
+.Nm
+.Op Fl c
+.Op Fl i Ar infosystem
+.Op Fl l Ar location
+.Op Ar name
+.Sh DESCRIPTION
+.Nm
+asks for the password of
+.Ar name ,
+or of the user who runs it, and checks it.
+If the password is wrong, it prints
+.Dq Sorry .
+With the file, NIS and opendirectory systems it then exits with status 1.
+With PAM, the default, it exits with status 0 whatever the result.
+.Pp
+The options are:
+.Bl -tag -width indent
+.It Fl c
+Compare the password as typed, without encrypting it first.
+This applies to the file and NIS systems.
+.It Fl i Ar infosystem
+Check the password with
+.Ar infosystem ,
+one of:
+.Bl -tag -width opendirectory
+.It Cm file
+the password file
+.It Cm nis
+NIS
+.It Cm opendirectory
+the directory service
+.It Cm PAM
+the
+.Pa /etc/pam.d/chkpasswd
+policy
+.El
+.Pp
+The default is
+.Cm PAM .
+.It Fl l Ar location
+For
+.Cm file ,
+the password file, by default
+.Pa /etc/master.passwd .
+For
+.Cm nis ,
+the NIS domain.
+For
+.Cm opendirectory ,
+the directory node, such as
+.Pa /Local/Default .
+Without it, the authentication search node is used.
+.El
+.Sh FILES
+.Bl -tag -width /etc/pam.d/chkpasswd -compact
+.It Pa /etc/pam.d/chkpasswd
+the PAM policy
+.El
+.Sh SEE ALSO
+.Xr passwd 1 ,
+.Xr pam_opendirectory 8

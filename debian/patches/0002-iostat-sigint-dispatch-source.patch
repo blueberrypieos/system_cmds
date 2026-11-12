@@ -1,0 +1,111 @@
+Description: End the iostat run loop on SIGINT with a dispatch signal source
+ The CoreFoundation library on PIE has no CFFileDescriptor.
+Author: The Blueberry Pie OS Authors
+Forwarded: not-needed
+Last-Update: 2026-11-11
+
+--- a/iostat/iostat.c
++++ b/iostat/iostat.c
+@@ -21,6 +21,30 @@
+  *
+  * @APPLE_LICENSE_HEADER_END@
+  */
++/*
++ * Modified 2026-11-11: a dispatch signal source ends the run loop on SIGINT (APSL 2.0 section 2.2(b)).
++ *
++ * This file was originally made available by Apple under the Apple Public
++ * Source License Version 1.0. Pursuant to section 7 of that license, it is
++ * used and distributed here under the Apple Public Source License
++ * Version 2.0.
++ */
++/*
++ * This file contains Original Code and/or Modifications of Original Code
++ * as defined in and that are subject to the Apple Public Source License
++ * Version 2.0 (the 'License'). You may not use this file except in
++ * compliance with the License. Please obtain a copy of the License at
++ * http://www.opensource.apple.com/apsl/ and read it before using this
++ * file.
++ *
++ * The Original Code and all software distributed under the License are
++ * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
++ * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
++ * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
++ * Please see the License for the specific language governing rights and
++ * limitations under the License.
++ */
+ /*-
+  * SPDX-License-Identifier: BSD-3-Clause
+  *
+@@ -126,6 +150,7 @@
+ #include <sys/sysctl.h>
+ 
+ #include <CoreFoundation/CoreFoundation.h>
++#include <dispatch/dispatch.h>
+ #include <IOKit/IOKitLib.h>
+ #include <IOKit/storage/IOBlockStorageDriver.h>
+ #include <IOKit/storage/IOMedia.h>
+@@ -175,8 +200,7 @@
+ /* local function declarations */
+ static void usage(void);
+ static void needreturn(int signo);
+-static void handle_needreturn(CFFileDescriptorRef ref, CFOptionFlags cbopt,
+-    void *info);
++static void handle_needreturn(void *info);
+ static void phdr(int signo);
+ static void do_phdr(void);
+ static void devstats(int perf_select, long double etime, int havelast);
+@@ -209,13 +233,9 @@
+ }
+ 
+ static void
+-add_sigint_kqfd(CFRunLoopRef loop)
++add_sigint_kqfd(CFRunLoopRef loop __unused)
+ {
+-	CFFileDescriptorContext ctx = {0, loop, NULL, NULL, NULL };
+-	CFFileDescriptorRef ref;
+-	CFRunLoopSourceRef rls;
+-	struct kevent kev;
+-	int kqfd;
++	dispatch_source_t ds;
+ 
+ 	/*
+ 	 * We need both a signal handler here, as well as the kqueue that we'll
+@@ -229,21 +249,12 @@
+ 	 */
+ 	signal(SIGINT, needreturn);
+ 
+-	kqfd = kqueue();
+-	if (kqfd == -1)
+-		err(1, "kqueue");
+-
+-	EV_SET(&kev, SIGINT, EVFILT_SIGNAL, EV_ADD, 0, 0, NULL);
+-	if (kevent(kqfd, &kev, 1, NULL, 0, NULL) != 0)
+-		err(1, "kevent");
+-
+-	ref = CFFileDescriptorCreate(NULL, kqfd, true, handle_needreturn, &ctx);
+-	rls = CFFileDescriptorCreateRunLoopSource(NULL, ref, 0);
+-	CFRunLoopAddSource(loop, rls, kCFRunLoopDefaultMode);
+-	CFRelease(rls);
+-
+-	CFFileDescriptorEnableCallBacks(ref, kCFFileDescriptorReadCallBack);
+-	CFRelease(ref);
++	ds = dispatch_source_create(DISPATCH_SOURCE_TYPE_SIGNAL, SIGINT, 0,
++	    dispatch_get_main_queue());
++	if (ds == NULL)
++		errx(1, "dispatch_source_create");
++	dispatch_source_set_event_handler_f(ds, handle_needreturn);
++	dispatch_resume(ds);
+ }
+ 
+ int
+@@ -513,8 +524,7 @@
+ }
+ 
+ static void
+-handle_needreturn(CFFileDescriptorRef ref __unused,
+-    CFOptionFlags cbopt __unused, void *info __unused)
++handle_needreturn(void *info __unused)
+ {
+ 	needreturn(SIGINT);
+ }

@@ -1,0 +1,18 @@
+#!/bin/sh
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright (c) 2026 The Blueberry Pie OS Authors
+set -e
+if [ "$1" = configure ]; then
+	for d in /private/var/at /private/var/at/jobs /private/var/at/spool; do
+		dpkg-statoverride --list "$d" > /dev/null ||
+			dpkg-statoverride --update --add '#1' '#0' 0755 "$d"
+	done
+	if [ -z "$2" ] || dpkg --compare-versions "$2" lt 1042.120.1+ds2-1; then
+		f="${DPKG_ROOT:-}/private/var/at/at.deny"
+		if [ ! -e "$f" ]; then
+			: > "$f"
+			chown 0:0 "$f"
+			chmod 644 "$f"
+		fi
+	fi
+fi

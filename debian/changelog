@@ -1,8 +1,15 @@
 system-cmds (1042.120.1+ds2-1) blueberry-pie-os; urgency=medium
 
   * Build login.
+  * Build login with BSM audit.
+  * Use OpenDirectory for passwords.
+  * Build chkpasswd and chpass.
+  * Build iostat and atrun.
+  * Ship the at spool directories.
+  * Name the system_cmds repository in the source notice and Vcs fields.
+  * Build with pietoolchain 0.2.0.
 
- -- Maxwell <maxwell@blueberrypieos.com>  Tue, 10 Nov 2026 00:33:52 +0000
+ -- Maxwell <maxwell@blueberrypieos.com>  Wed, 11 Nov 2026 22:22:55 +0000
 
 system-cmds (1042.120.1+ds1-1) blueberry-pie-os; urgency=medium
 
