@@ -1,3 +1,13 @@
+system-cmds (1042.120.1+ds2-2) blueberry-pie-os; urgency=medium
+
+  * Build-Depend on pietoolchain-host and pietoolchain-sdk.
+  * proc_uuid_policy and vm_purgeable_stat are in /usr/bin, so the package
+    installs nothing under /usr/local.
+  * at.allow and at.deny are in /etc. The postinst moves them there from
+    /var/at, and makes an empty /etc/at.deny on a new install.
+
+ -- Maxwell <maxwell@blueberrypieos.com>  Mon, 16 Nov 2026 18:36:38 +0000
+
 system-cmds (1042.120.1+ds2-1) blueberry-pie-os; urgency=medium
 
   * Build login.

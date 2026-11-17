@@ -29,7 +29,7 @@ arch_MANS := arch/arch.1:man1 arch/machine.1:man1
 at_SRCS := at/at.c at/panic.c at/parsetime.c at/perm.c
 at_DIR := usr/bin
 at_FLAGS := -DDAEMON_UID=1 -DDAEMON_GID=1 "-DDEFAULT_AT_QUEUE='a'" "-DDEFAULT_BATCH_QUEUE='b'" \
-	'-DPERM_PATH="/usr/lib/cron/"'
+	'-DPERM_PATH="/etc/"'
 at_MODE := 4555
 at_MANS := at/at.1:man1
 
@@ -125,7 +125,7 @@ passwd_LIBS := -framework OpenDirectory -framework CoreFoundation -lpam
 passwd_MANS := passwd/passwd.1:man1
 
 proc_uuid_policy_SRCS := proc_uuid_policy/proc_uuid_policy.c
-proc_uuid_policy_DIR := usr/local/bin
+proc_uuid_policy_DIR := usr/bin
 
 purge_SRCS := purge/purge.c
 purge_DIR := usr/sbin
@@ -178,7 +178,7 @@ vipw_DIR := usr/sbin
 vipw_MANS := vipw/vipw.8:man8
 
 vm_purgeable_stat_SRCS := vm_purgeable_stat/vm_purgeable_stat.c
-vm_purgeable_stat_DIR := usr/local/bin
+vm_purgeable_stat_DIR := usr/bin
 vm_purgeable_stat_LIBS := -lutil
 
 vm_stat_SRCS := vm_stat/vm_stat.c

@@ -561,6 +561,14 @@ License: LicenseRef-BSD-2-Clause-FreeBSD-at AND APSL-2.0
 Comment: The Apple code was originally distributed under APSL-1.0. It is used
  here under APSL-2.0, as permitted by section 7 of APSL-1.0.
 
+Files: debian/patches/0004-at-permission-files-in-etc.patch
+Copyright: 1992-2018 The FreeBSD Project
+ Apple Inc.
+ 2026 The Blueberry Pie OS Authors
+License: LicenseRef-BSD-2-Clause-author-contributors AND APSL-2.0
+Comment: The Apple code was originally distributed under APSL-1.0. It is used
+ here under APSL-2.0, as permitted by section 7 of APSL-1.0.
+
 Files: debian/build/obj/getconf/gperf/unsigned_limits.c
 Copyright: none; the author disclaimed copyright in these files
  1992-2018 The FreeBSD Project

@@ -1,3 +1,4 @@
 0001-reboot-shutdown-without-kextd.patch
 0002-iostat-sigint-dispatch-source.patch
 0003-atrun-without-btm.patch
+0004-at-permission-files-in-etc.patch
